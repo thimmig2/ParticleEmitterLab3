@@ -4,7 +4,7 @@ using System.Collections;
 public class ParticleScript : MonoBehaviour {
 
 	private static int count = 0;
-	private static float timeStep = Time.deltaTime * 40;
+	private static float timeStep = Time.deltaTime * 50;
 	private static float massMin = 1.0F,
 							massMax = 10.0F;
 	
@@ -38,7 +38,7 @@ public class ParticleScript : MonoBehaviour {
 		this.velocity = new Vector3(Random.Range(vXMin, vXMax), Random.Range(vYMin, vYMax), Random.Range(vZMin, vZMax));
 		this.force = new Vector3(Random.Range(fXMin, fXMax), Random.Range(fYMin, fYMax), Random.Range(fZMin, fZMax));
 
-		this.bounds = new BoundingVolume(transform.GetComponent<MeshFilter>().mesh);
+		this.bounds = new BoundingVolume(transform);
 	}
 
 	void Start () {}
@@ -74,11 +74,10 @@ public class ParticleScript : MonoBehaviour {
 
 	public void checkCollisions(GameObject plane) {
 		PlaneScript planeScript = plane.GetComponent<PlaneScript>();
-		
 		if(planeScript.computeDistance(transform.position) <= bounds.radius) {
 			this.acceleration = Vector3.zero;
 			this.force = Vector3.zero;
-			this.velocity = Vector3.zero;
+			this.velocity = Vector3.Reflect(this.velocity, planeScript.normal);
 		}
 	}
 

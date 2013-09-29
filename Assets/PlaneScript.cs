@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlaneScript : MonoBehaviour {
 
-	private Vector3 v0, normal;
+	public Vector3 v0, normal;
 
 	// Use this for initialization
 	void Start () {
@@ -16,14 +16,12 @@ public class PlaneScript : MonoBehaviour {
 	}
 
 	private void computeNormal() {
-		Mesh planeMesh = transform.GetComponent<MeshFilter>().mesh;
-
-		this.v0 = planeMesh.vertices[0];
-		this.normal = planeMesh.normals[0];
+		this.v0 = transform.position;
+		this.normal = transform.up; 
 	}
 
 	public float computeDistance(Vector3 point) {
 		// compute the distance from an arbitrary point to the plane
-		return Vector3.Dot(this.normal, (point - v0));
+		return Vector3.Dot(this.normal, (point - v0)) / this.normal.magnitude;
 	}
 }
