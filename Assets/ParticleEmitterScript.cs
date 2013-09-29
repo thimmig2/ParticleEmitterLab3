@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ParticleEmitterScript : MonoBehaviour {
 
 	public Transform myParticle;
+	public GameObject plane;
 	
 	private List<GameObject> particles;
 	private int particleCount = 40;
@@ -27,6 +28,11 @@ public class ParticleEmitterScript : MonoBehaviour {
 		for(int i = particles.Count; i < particleCount; i++) {
 			particles.Add(createParticle());
 		}
+
+		foreach(GameObject particle in particles) {
+			particle.GetComponent<ParticleScript>().checkCollisions(plane);
+		}
+
 	}
 
 	private GameObject createParticle() {

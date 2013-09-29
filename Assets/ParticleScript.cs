@@ -25,7 +25,7 @@ public class ParticleScript : MonoBehaviour {
 	private Vector3 position, velocity, acceleration, force;
 	private int age, maxAge;
 	private float mass;
-
+	private BoundingVolume bounds;
 
 	public void setup(Transform parent) {
 		transform.name = "Particle" + count;
@@ -37,6 +37,8 @@ public class ParticleScript : MonoBehaviour {
 		this.mass = Random.Range(massMin, massMax);
 		this.velocity = new Vector3(Random.Range(vXMin, vXMax), Random.Range(vYMin, vYMax), Random.Range(vZMin, vZMax));
 		this.force = new Vector3(Random.Range(fXMin, fXMax), Random.Range(fYMin, fYMax), Random.Range(fZMin, fZMax));
+
+		this.bounds = new BoundingVolume(transform.GetComponent<MeshFilter>().mesh);
 	}
 
 	void Start () {}
@@ -70,6 +72,15 @@ public class ParticleScript : MonoBehaviour {
 		}
 	}
 
+	public void checkCollisions(GameObject plane) {
+		PlaneScript planeScript = plane.GetComponent<PlaneScript>();
+		
+		if(planeScript.computeDistance(transform.position) <= bounds.radius) {
+			this.acceleration = Vector3.zero;
+			this.force = Vector3.zero;
+			this.velocity = Vector3.zero;
+		}
+	}
 
 
 }
