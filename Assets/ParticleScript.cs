@@ -6,7 +6,7 @@ public class ParticleScript : MonoBehaviour {
 	private static int count = 0;
 	private static float timeStep = Time.deltaTime * 50;
 	private static float massMin = 1.0F,
-							massMax = 10.0F;
+							massMax = 10000.0F;
 	
 	private static float vXMin = -10.0F,
 							vXMax = 10.0F,
@@ -32,13 +32,25 @@ public class ParticleScript : MonoBehaviour {
 		ParticleScript.count++;
 
 		transform.parent = parent;
+		transform.position = generateStartPosition();
 		this.age = 0;
 		this.maxAge = 1000;
 		this.mass = Random.Range(massMin, massMax);
 		this.velocity = new Vector3(Random.Range(vXMin, vXMax), Random.Range(vYMin, vYMax), Random.Range(vZMin, vZMax));
-		this.force = new Vector3(Random.Range(fXMin, fXMax), Random.Range(fYMin, fYMax), Random.Range(fZMin, fZMax));
-
+		
 		this.bounds = new BoundingVolume(transform);
+	}
+
+	private Vector3 generateStartPosition() {
+		return transform.position + (Random.onUnitSphere * Random.Range(5.5F, 8F));		
+	}
+
+	private float rand(float min1, float max1, float min2, float max2) {
+		if(Random.Range(0, 2) == 0) {
+			return Random.Range(min1, max1);
+		} else {
+			return Random.Range(min2, max2);			
+		}
 	}
 
 	void Start () {}
@@ -62,7 +74,14 @@ public class ParticleScript : MonoBehaviour {
 	}
 
 	private void updateAcceleration() {
+		this.force = GameObject.Find("Planet").GetComponent<PlanetScript>().gravitationalForce(this.mass, transform.position);
+		// = new Vector3(Random.Range(fXMin, fXMax), Random.Range(fYMin, fYMax), Random.Range(fZMin, fZMax));
+
 		this.acceleration = this.force/this.mass;
+	}
+
+	public void applyForce(Vector3 force) {
+		this.force += force;
 	}
 
 	private void ageCheck() {
@@ -72,12 +91,20 @@ public class ParticleScript : MonoBehaviour {
 		}
 	}
 
-	public void checkCollisions(GameObject plane) {
+	public void checkPlaneCollisions(GameObject plane) {
 		PlaneScript planeScript = plane.GetComponent<PlaneScript>();
+
 		if(planeScript.computeDistance(transform.position) <= bounds.radius) {
-			this.acceleration = Vector3.zero;
-			this.force = Vector3.zero;
 			this.velocity = Vector3.Reflect(this.velocity, planeScript.normal);
+		}
+	}
+
+	public void checkPlanetCollisions(GameObject planet) {
+		PlanetScript planetScript = planet.GetComponent<PlanetScript>();
+
+		if(planetScript.computeDistance(transform.position) <= bounds.radius) {
+			Vector3 planetNormal = planet.transform.position - transform.position;
+			this.velocity = Vector3.Reflect(this.velocity, planetNormal.normalized);
 		}
 	}
 
