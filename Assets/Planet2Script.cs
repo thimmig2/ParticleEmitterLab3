@@ -5,17 +5,26 @@ using System.Collections;
 public class Planet2Script : MonoBehaviour {
 
 	public GameObject planet;
-	private float mass = (float)Math.Pow(10, 13) * 500F;
+	private float mass = (float)Math.Pow(10, 13) * 45F;
+	private float speed;	
 
 	// Use this for initialization
 	void Start () {
-
+		this.speed = 15F * Time.deltaTime;	
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		transform.RotateAround(planet.transform.position, Vector3.up, 10 * Time.deltaTime);
+		if (Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Keypad3)) {
+			this.mass -= (float)Math.Pow(10, 13);
+		}
+
+		if (Input.GetKey(KeyCode.Alpha4) || Input.GetKey(KeyCode.Keypad4)) {
+			this.mass += (float)Math.Pow(10, 13);
+		}
+
+		transform.RotateAround(planet.transform.position, Vector3.up, this.speed);
 	}
 
 	public Vector3 gravitationalForce(float objectMass, Vector3 obectPosition) {

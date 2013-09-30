@@ -4,7 +4,7 @@ using System.Collections;
 
 public class PlanetScript : MonoBehaviour {
 
-	private float mass = (float)Math.Pow(10, 13) * 1000F;
+	private float mass = (float)Math.Pow(10, 13) * 45F;
 
 	// Use this for initialization
 	void Start () {
@@ -14,7 +14,14 @@ public class PlanetScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Keypad1)) {
+			this.mass -= (float)Math.Pow(10, 13);
+			Debug.Log(this.mass);
+		}
+
+		if (Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Keypad2)) {
+			this.mass += (float)Math.Pow(10, 13);
+		}
 	}
 
 	public Vector3 gravitationalForce(float objectMass, Vector3 obectPosition) {

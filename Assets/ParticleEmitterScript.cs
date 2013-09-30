@@ -9,7 +9,7 @@ public class ParticleEmitterScript : MonoBehaviour {
 	public GameObject planet, planet2;
 	
 	private List<GameObject> particles;
-	private int particleCount = 1000;
+	private int particleCount = 150;
 
 	// Use this for initialization
 	void Start () {
@@ -31,7 +31,7 @@ public class ParticleEmitterScript : MonoBehaviour {
 		}
 
 		foreach(GameObject particle in particles) {
-			//particle.GetComponent<ParticleScript>().checkPlaneCollisions(plane);
+			particle.GetComponent<ParticleScript>().checkPlaneCollisions(plane);
 		}
 
 		foreach(GameObject particle in particles) {
