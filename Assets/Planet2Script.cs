@@ -5,25 +5,29 @@ using System.Collections;
 public class Planet2Script : MonoBehaviour {
 
 	public GameObject planet;
+	
 	private float mass = (float)Math.Pow(10, 13) * 45F;
 	private float speed;	
 
 	// Use this for initialization
-	void Start () {
-		this.speed = 15F * Time.deltaTime;	
-	
+	void Start () {	
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		this.speed = 15F * Time.deltaTime;
+
+		// decrease mass if 3 key is down
 		if (Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Keypad3)) {
 			this.mass -= (float)Math.Pow(10, 13);
 		}
 
+		// increase plannet mass if 4 key is down
 		if (Input.GetKey(KeyCode.Alpha4) || Input.GetKey(KeyCode.Keypad4)) {
 			this.mass += (float)Math.Pow(10, 13);
 		}
 
+		// rotate this planet around the other
 		transform.RotateAround(planet.transform.position, Vector3.up, this.speed);
 	}
 

@@ -6,14 +6,11 @@ public class PlanetScript : MonoBehaviour {
 
 	private float mass = (float)Math.Pow(10, 13) * 45F;
 
-	// Use this for initialization
-	void Start () {
-
+	void Start () {}
 	
-	}
-	
-	// Update is called once per frame
 	void Update () {
+
+		// decrease mass of this plannet if 1 key is down
 		if (Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Keypad1)) {
 			this.mass -= (float)Math.Pow(10, 13);
 			Debug.Log(this.mass);

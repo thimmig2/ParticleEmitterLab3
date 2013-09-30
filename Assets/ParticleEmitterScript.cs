@@ -2,16 +2,28 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/* 
+	This class instantiates and tracks particles. 
+*/
 public class ParticleEmitterScript : MonoBehaviour {
 
-	public Transform myParticle;
-	public GameObject plane;
-	public GameObject planet, planet2;
-	
-	private List<GameObject> particles;
-	private int particleCount = 150;
+/* ------------------ Constants ------------------ */	
 
-	// Use this for initialization
+	private const int particleCount = 75;
+
+/* --------------- End Constants ----------------- */		
+
+
+	// objects that particles can collide with
+	public GameObject plane, planet, planet2;
+	// the particle prefab
+	public Transform myParticle;
+
+	// will hold all of the current living particles
+	private List<GameObject> particles;
+
+
+	// initializes particles
 	void Start () {
 		particles = new List<GameObject>();
 		
@@ -32,15 +44,12 @@ public class ParticleEmitterScript : MonoBehaviour {
 
 		foreach(GameObject particle in particles) {
 			particle.GetComponent<ParticleScript>().checkPlaneCollisions(plane);
-		}
-
-		foreach(GameObject particle in particles) {
 			particle.GetComponent<ParticleScript>().checkPlanetCollisions(planet);
 			particle.GetComponent<ParticleScript>().checkPlanet2Collisions(planet2);
 		}
-
 	}
 
+	// create a new particle based on the location of the emitter and return it
 	private GameObject createParticle() {
 		Component newParticle = (Component)Instantiate(myParticle, transform.position, transform.rotation);
 		newParticle.GetComponent<ParticleScript>().setup(transform);
