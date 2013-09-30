@@ -2,9 +2,10 @@
 using System;
 using System.Collections;
 
-public class PlanetScript : MonoBehaviour {
+public class Planet2Script : MonoBehaviour {
 
-	private float mass = (float)Math.Pow(10, 13) * 1000F;
+	public GameObject planet;
+	private float mass = (float)Math.Pow(10, 13) * 500F;
 
 	// Use this for initialization
 	void Start () {
@@ -14,7 +15,7 @@ public class PlanetScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		transform.RotateAround(planet.transform.position, Vector3.up, 10 * Time.deltaTime);
 	}
 
 	public Vector3 gravitationalForce(float objectMass, Vector3 obectPosition) {
